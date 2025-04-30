@@ -14,9 +14,19 @@ export const Route = createFileRoute('/')({
 });
 
 function Home() {
+  const users = Route.useLoaderData();
+
   return (
     <div>
-      <h1>Posts</h1>
+      <h1>Users</h1>
+      <ul>
+        {users.map((user) => (
+          <li key={user.id}>
+            <h3>{user.name}</h3>
+            <p>{user.email}</p>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

@@ -1,0 +1,4 @@
+{
+	"recommendations": ["biomejs.biome", "Prisma.prisma", "PKief.material-icon-theme", "bradlc.vscode-tailwindcss",
+	"JayFong.generate-index", "k--kato.intellij-idea-keybindings", "eamodio.gitlens", "EditorConfig.EditorConfig"]
+}

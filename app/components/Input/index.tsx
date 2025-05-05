@@ -1,5 +1,5 @@
 import cn from 'classnames'
-import { type FormikProps } from 'formik'
+import type { FormikProps } from 'formik'
 import css from './index.module.scss'
 
 export const Input = ({

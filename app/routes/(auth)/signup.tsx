@@ -3,6 +3,7 @@ import { useState } from "react";
 import { authClient } from "~/lib/auth-client";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Button } from "~/components/Button";
+import { Input } from "~/components/Input";
 
 export const Route = createFileRoute("/(auth)/signup")({
   component: SignupForm,

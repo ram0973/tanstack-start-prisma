@@ -1,7 +1,7 @@
 {
   "name": "tanstack-start-prisma",
-  "module": "index.ts",
-  "type": "module",
+  
+  
   "private": true,
   "scripts": {
     "dev": "vinxi dev",
@@ -28,6 +28,7 @@
     "better-auth": "^1.2.7",
     "classnames": "^2.5.1",
     "cross-env": "^7.0.3",
+    "formik": "^2.4.6",
     "prisma": "^6.7.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

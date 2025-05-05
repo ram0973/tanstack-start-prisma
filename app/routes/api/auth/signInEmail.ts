@@ -1,4 +1,4 @@
-import { auth } from "@/lib/auth";
+import { auth } from "~/lib/auth";
 import { createAPIFileRoute } from '@tanstack/react-start/api';
 
 const signIn = async () => {

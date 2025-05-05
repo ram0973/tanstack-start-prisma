@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "~/*": ["./app/*"]
     },
 
     // Environment setup & latest features

@@ -9,7 +9,7 @@ const getUsers = createServerFn({ method: "GET" }).handler(async () => {
   return users;
 });
 
-export const Route = createFileRoute('/')({
+export const Route = createFileRoute('/users/')({
   component: Home,
   loader: () => {
     return getUsers();

@@ -6,6 +6,7 @@ import {
 } from '@tanstack/react-router';
 // defines the root route and global HTML layout for the entire application
 import type { ReactNode } from 'react';
+import '~/styles/global.scss'
 
 export const Route = createRootRoute({
   head: () => ({

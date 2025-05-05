@@ -4,6 +4,7 @@ import { authClient } from "~/lib/auth-client";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Button } from "~/components/Button";
 import { Input } from "~/components/Input";
+import css from './index.module.scss'
 
 export const Route = createFileRoute("/(auth)/signup")({
   component: SignupForm,
@@ -60,17 +61,12 @@ function SignupForm() {
   };
 
   return (
-    <div className="">
+    <div className={css.signup_form}>
       <form onSubmit={handleSubmit} className="flex">
-        <label htmlFor="name">Name</label>
-        <input
-          id="name"
-          name="name"
-          type="text"
-          placeholder="John Doe"
-          readOnly={isLoading}
-          required
-        />
+        <div className={css.field}>
+          <label htmlFor="name" className={css.label}>Name</label>
+          <input id="name" name="name" type="text" placeholder="John Doe" readOnly={isLoading} required className={css.input} />
+        </div>
 
         <label htmlFor="email">Email</label>
         <input

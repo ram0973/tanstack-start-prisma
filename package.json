@@ -1,6 +1,6 @@
 {
   "name": "tanstack-start-prisma",
-  
+  "type": "module", 
   
   "private": true,
   "scripts": {

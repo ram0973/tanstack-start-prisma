@@ -1,27 +1,53 @@
+import { QueryClient } from "@tanstack/react-query";
 import {
+  createRootRouteWithContext,
   HeadContent,
   Outlet,
+  ScriptOnce,
   Scripts,
-  createRootRoute,
-} from '@tanstack/react-router';
-// defines the root route and global HTML layout for the entire application
-import type { ReactNode } from 'react';
-import '~/styles/global.scss'
+} from "@tanstack/react-router";
+import { createServerFn } from "@tanstack/react-start";
+import { getWebRequest } from "@tanstack/react-start/server";
 
-export const Route = createRootRoute({
+import { auth } from "~/lib/auth";
+
+const getUser = createServerFn({ method: "GET" }).handler(async () => {
+  const { headers } = getWebRequest()!;
+  const session = await auth.api.getSession({ headers });
+
+  return session?.user || null;
+});
+
+export const Route = createRootRouteWithContext<{
+  queryClient: QueryClient;
+  user: Awaited<ReturnType<typeof getUser>>;
+}>()({
+  beforeLoad: async ({ context }) => {
+    context.queryClient = new QueryClient();
+    const user = await context.queryClient.fetchQuery({
+      queryKey: ["user"],
+      queryFn: ({ signal }) => getUser({ signal }),
+    }); // we're using react-query for caching, see router.tsx
+    return { user };
+  },
   head: () => ({
     meta: [
       {
-        charSet: 'utf-8',
+        charSet: "utf-8",
       },
       {
-        name: 'viewport',
-        content: 'width=device-width, initial-scale=1',
+        name: "viewport",
+        content: "width=device-width, initial-scale=1",
       },
       {
-        title: 'TanStack Start Starter',
+        title: "React TanStarter",
+      },
+      {
+        name: "description",
+        content: "A minimal starter template for 🏝️ TanStack Start.",
       },
     ],
+    
   }),
   component: RootComponent,
 });
@@ -34,14 +60,23 @@ function RootComponent() {
   );
 }
 
-function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
+function RootDocument({ children }: { readonly children: React.ReactNode }) {
   return (
-    <html lang="en">
+    // suppress since we're updating the "dark" class in a custom script below
+    <html suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
       <body>
+        <ScriptOnce>
+          {`document.documentElement.classList.toggle(
+            'dark',
+            localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+            )`}
+        </ScriptOnce>
+
         {children}
+
         <Scripts />
       </body>
     </html>

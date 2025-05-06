@@ -1,0 +1,71 @@
+@use '../../../styles/_vars';
+@use '../../../styles/_mixins';
+
+.login_form_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.login_form {
+  display: flex;
+  flex-direction: column;
+  min-width: 25rem;
+  gap: 1.5rem;
+}
+
+.centered {
+  text-align: center;
+}
+
+h1 {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.logo {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  vertical-align: middle;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'%3e%3cpath d='M7 2h10'/%3e%3cpath d='M5 6h14'/%3e%3crect width='18' height='12' x='3' y='10' rx='2'/%3e%3c/svg%3e");
+  margin-bottom: 1rem;
+}
+
+.field {
+  gap: 8px;  
+  &.disabled {
+    opacity: 0.5;
+  }
+
+  .label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+  }
+
+  .input {
+    display: block;
+    padding: 7px;
+    border: 2px solid vars.$gray;
+    border-radius: vars.$borderRadiusMedium;
+    background-color: vars.$white;
+    outline: none;
+    width: 100%;
+    //max-width: 200px;
+
+    &:focus {
+      border-color: vars.$green;
+    }
+
+    &.invalid {
+      border-color: vars.$red;
+    }
+  }
+
+  .error {
+    margin-top: 2px;
+    color: vars.$red;
+  }
+}

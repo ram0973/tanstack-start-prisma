@@ -1,4 +1,4 @@
-import { auth } from '~/lib/auth'; // import your auth instance
+import { auth } from '~/lib/auth'; // import self auth instance
 import { createAPIFileRoute } from '@tanstack/react-start/api';
 
 export const APIRoute = createAPIFileRoute('/api/auth/$')({

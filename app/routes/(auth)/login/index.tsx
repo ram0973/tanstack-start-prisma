@@ -3,7 +3,7 @@ import { useState } from "react";
 import { authClient } from "~/lib/auth-client";
 import { QueryClient } from '@tanstack/react-query'
 import { Button } from "~/components/Button";
-import css from './index.module.scss';
+import css from './login.module.css';
 import cn from "classnames";
 
 export const Route = createFileRoute("/(auth)/login/")({

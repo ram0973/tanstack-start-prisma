@@ -10,6 +10,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { getWebRequest } from "@tanstack/react-start/server";
 
 import { auth } from "~/lib/auth";
+import globalsCss from "~/styles/globals.css?url"
 
 const getUser = createServerFn({ method: "GET" }).handler(async () => {
   const { headers } = getWebRequest()!;
@@ -40,14 +41,19 @@ export const Route = createRootRouteWithContext<{
         content: "width=device-width, initial-scale=1",
       },
       {
-        title: "React TanStarter",
+        title: "TanStack Start Starter",
       },
       {
         name: "description",
         content: "A minimal starter template for 🏝️ TanStack Start.",
       },
     ],
-    
+    links: [
+      {
+        rel: "stylesheet",
+        href: globalsCss,
+      },
+    ],
   }),
   component: RootComponent,
 });
@@ -63,7 +69,7 @@ function RootComponent() {
 function RootDocument({ children }: { readonly children: React.ReactNode }) {
   return (
     // suppress since we're updating the "dark" class in a custom script below
-    <html suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
@@ -74,9 +80,7 @@ function RootDocument({ children }: { readonly children: React.ReactNode }) {
             localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
             )`}
         </ScriptOnce>
-
         {children}
-
         <Scripts />
       </body>
     </html>

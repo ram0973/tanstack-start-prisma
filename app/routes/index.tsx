@@ -16,15 +16,15 @@ function Home() {
   const { user } = Route.useLoaderData();
   const router = useRouter();
 
-
   return (
     <div>
-      <h1>User</h1>
+      <h1 className="text-3xl font-bold underline text-red-600">
+        Hello world!
+      </h1>
       
       {JSON.stringify(user)}
 
-      <button
-            onClick={async () => {
+      <button onClick={async () => {
               await authClient.signOut();
               await queryClient.invalidateQueries({ queryKey: ["user"] });
               await router.invalidate();

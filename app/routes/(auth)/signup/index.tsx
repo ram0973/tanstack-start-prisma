@@ -2,10 +2,10 @@ import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { authClient } from "~/lib/auth-client";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { Button } from "~/components/Button";
+import { Button } from "~/components/ui/button";
 import { Loader } from "~/components/Loader";
-import css from './index.module.scss';
-import cn from "classnames";
+import css from './signup.module.css';
+import { cn } from "~/lib/utils";
 
 export const Route = createFileRoute("/(auth)/signup/")({
   component: SignupForm,
@@ -111,7 +111,7 @@ function SignupForm() {
         </div>  
 
         <div className={cn(css.field, css.centered)}>
-          <Button type="submit" disabled={isLoading}>
+          <Button variant="destructive" type="submit" disabled={isLoading}>
             {isLoading && <Loader className="animate-spin" />}
             {isLoading ? "Signing up..." : "Sign up"}
           </Button>

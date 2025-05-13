@@ -1,18 +1,14 @@
 
 import react from '@vitejs/plugin-react'
-import autoprefixer from 'autoprefixer'
 import { defineConfig } from 'vite'
+import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig(({ mode }) => {
   return {
     plugins: [
       react(),
+      tailwindcss(),
     ],  
-    css: {
-      postcss: {
-        plugins: [autoprefixer({})],
-      },
-    },
     build: {
       sourcemap: true,
       chunkSizeWarningLimit: 900,

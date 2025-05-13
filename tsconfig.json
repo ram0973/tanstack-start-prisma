@@ -9,7 +9,7 @@
     "lib": ["ESNext"],
     "target": "ESNext",
     "module": "ESNext",
-    //"moduleDetection": "force",
+    "moduleDetection": "force",
     "jsx": "react-jsx",
     "allowJs": true,
 
@@ -18,8 +18,6 @@
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "noEmit": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
 
     // Best practices
     "strict": true,
@@ -32,6 +30,5 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false
-  },
-  "include": ["app"],
+  }
 }

@@ -1,35 +1,23 @@
-https://tanstack.com/start/latest/docs/framework/react/build-from-scratch
+http://localhost:3000/api/auth/get-session
 
-# tanstack-start-prisma
-
-bun init
-
-bun i @tanstack/react-start @tanstack/react-router vinxi
-bun i react react-dom
-bun i -D @vitejs/plugin-react vite-tsconfig-paths
-bun i -D typescript @types/react @types/react-dom
-
-package.json:
-"scripts": {
-  "dev": "vinxi dev",
-  "build": "vinxi build",
-  "start": "vinxi start"
+{
+    "session": {
+    "expiresAt": "2025-05-23T06:01:10.289Z",
+    "token": "QyXNp4wwGjIgURWTTr5VgodyvPnglol4",
+    "createdAt": "2025-05-16T06:01:10.289Z",
+    "updatedAt": "2025-05-16T06:01:10.289Z",
+    "ipAddress": "",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+    "userId": "IkZQN7PY2oeMvT92oB5A3kgVCCZl6f0T",
+    "id": "KhnX6ostdg5sQpEuMZ8phk6YI2X6inli"
+},
+    "user": {
+    "name": "John Connor",
+    "email": "john@connor.com",
+    "emailVerified": false,
+    "image": null,
+    "createdAt": "2025-05-16T06:01:10.274Z",
+    "updatedAt": "2025-05-16T06:01:10.274Z",
+    "id": "IkZQN7PY2oeMvT92oB5A3kgVCCZl6f0T"
+    }
 }
-
-// app.config.ts
-import { defineConfig } from '@tanstack/react-start/config'
-import tsConfigPaths from 'vite-tsconfig-paths'
-
-export default defineConfig({
-  vite: {
-    plugins: [
-      tsConfigPaths({
-        projects: ['./tsconfig.json'],
-      }),
-    ],
-  },
-})  
-
-bun i tailwindcss @tailwindcss/vite
-bun i prisma tsx --save-dev
-bun i @prisma/client

@@ -7,7 +7,7 @@ services:
       - POSTGRES_USER=blog
       - POSTGRES_PASSWORD=blog
     ports:
-      - "5432:5432"
+      - '5432:5432'
   postgres-test:
     build:
       dockerfile: ./docker/postgresql/Dockerfile
@@ -16,4 +16,4 @@ services:
       - POSTGRES_USER=blog-test
       - POSTGRES_PASSWORD=blog-test
     ports:
-      - "5433:5432"   
+      - '5433:5432'

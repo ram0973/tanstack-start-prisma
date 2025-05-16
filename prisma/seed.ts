@@ -1,21 +1,20 @@
-import type { Prisma } from "@prisma/client";
-
-import prisma from "~/lib/prisma";
+import { prisma } from '@/lib/prisma'
+import { Prisma } from '@prisma/client'
 
 const userData: Prisma.UserCreateInput[] = [
   {
-    name: "Alice",
-    email: "alice@acme.co",
+    name: 'Alice',
+    email: 'alice@acme.co',
     posts: {
       create: [
         {
-          title: "Join the Prisma Discord",
-          content: "https://pris.ly/discord",
+          title: 'Join the Prisma Discord',
+          content: 'https://pris.ly/discord',
           published: true,
         },
         {
-          title: "Prisma on YouTube",
-          content: "https://pris.ly/youtube",
+          title: 'Prisma on YouTube',
+          content: 'https://pris.ly/youtube',
           published: true,
         },
       ],
@@ -23,25 +22,25 @@ const userData: Prisma.UserCreateInput[] = [
     emailVerified: true,
   },
   {
-    name: "Bob",
-    email: "bob@acme.co",
+    name: 'Bob',
+    email: 'bob@acme.co',
     posts: {
       create: [
         {
-          title: "Follow Prisma on Twitter",
-          content: "https://www.twitter.com/prisma",
+          title: 'Follow Prisma on Twitter',
+          content: 'https://www.twitter.com/prisma',
           published: true,
         },
       ],
     },
     emailVerified: false,
   },
-];
+]
 
 export async function main() {
   for (const u of userData) {
-    await prisma.user.create({ data: u });
+    await prisma.user.create({ data: u })
   }
 }
 
-main();
+main()

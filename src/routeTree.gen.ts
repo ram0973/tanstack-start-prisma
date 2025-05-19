@@ -19,7 +19,8 @@ import { Route as DashboardIndexImport } from './routes/dashboard/index'
 import { Route as UsersMeImport } from './routes/users/me'
 import { Route as authSignupIndexImport } from './routes/(auth)/signup/index'
 import { Route as authLoginIndexImport } from './routes/(auth)/login/index'
-import { Route as DashboardBlogPostsImport } from './routes/dashboard/blog/posts'
+import { Route as DashboardBlogPostsIndexImport } from './routes/dashboard/blog/posts/index'
+import { Route as DashboardBlogEditIdImport } from './routes/dashboard/blog/edit/$id'
 
 // Create/Update Routes
 
@@ -70,9 +71,15 @@ const authLoginIndexRoute = authLoginIndexImport.update({
   getParentRoute: () => authRouteRoute,
 } as any)
 
-const DashboardBlogPostsRoute = DashboardBlogPostsImport.update({
-  id: '/blog/posts',
-  path: '/blog/posts',
+const DashboardBlogPostsIndexRoute = DashboardBlogPostsIndexImport.update({
+  id: '/blog/posts/',
+  path: '/blog/posts/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+
+const DashboardBlogEditIdRoute = DashboardBlogEditIdImport.update({
+  id: '/blog/edit/$id',
+  path: '/blog/edit/$id',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
 
@@ -122,13 +129,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersIndexImport
       parentRoute: typeof rootRoute
     }
-    '/dashboard/blog/posts': {
-      id: '/dashboard/blog/posts'
-      path: '/blog/posts'
-      fullPath: '/dashboard/blog/posts'
-      preLoaderRoute: typeof DashboardBlogPostsImport
-      parentRoute: typeof DashboardRouteImport
-    }
     '/(auth)/login/': {
       id: '/(auth)/login/'
       path: '/login'
@@ -142,6 +142,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/signup'
       preLoaderRoute: typeof authSignupIndexImport
       parentRoute: typeof authRouteImport
+    }
+    '/dashboard/blog/edit/$id': {
+      id: '/dashboard/blog/edit/$id'
+      path: '/blog/edit/$id'
+      fullPath: '/dashboard/blog/edit/$id'
+      preLoaderRoute: typeof DashboardBlogEditIdImport
+      parentRoute: typeof DashboardRouteImport
+    }
+    '/dashboard/blog/posts/': {
+      id: '/dashboard/blog/posts/'
+      path: '/blog/posts'
+      fullPath: '/dashboard/blog/posts'
+      preLoaderRoute: typeof DashboardBlogPostsIndexImport
+      parentRoute: typeof DashboardRouteImport
     }
   }
 }
@@ -164,12 +178,14 @@ const authRouteRouteWithChildren = authRouteRoute._addFileChildren(
 
 interface DashboardRouteRouteChildren {
   DashboardIndexRoute: typeof DashboardIndexRoute
-  DashboardBlogPostsRoute: typeof DashboardBlogPostsRoute
+  DashboardBlogEditIdRoute: typeof DashboardBlogEditIdRoute
+  DashboardBlogPostsIndexRoute: typeof DashboardBlogPostsIndexRoute
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardIndexRoute: DashboardIndexRoute,
-  DashboardBlogPostsRoute: DashboardBlogPostsRoute,
+  DashboardBlogEditIdRoute: DashboardBlogEditIdRoute,
+  DashboardBlogPostsIndexRoute: DashboardBlogPostsIndexRoute,
 }
 
 const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
@@ -182,9 +198,10 @@ export interface FileRoutesByFullPath {
   '/users/me': typeof UsersMeRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/users': typeof UsersIndexRoute
-  '/dashboard/blog/posts': typeof DashboardBlogPostsRoute
   '/login': typeof authLoginIndexRoute
   '/signup': typeof authSignupIndexRoute
+  '/dashboard/blog/edit/$id': typeof DashboardBlogEditIdRoute
+  '/dashboard/blog/posts': typeof DashboardBlogPostsIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -192,9 +209,10 @@ export interface FileRoutesByTo {
   '/users/me': typeof UsersMeRoute
   '/dashboard': typeof DashboardIndexRoute
   '/users': typeof UsersIndexRoute
-  '/dashboard/blog/posts': typeof DashboardBlogPostsRoute
   '/login': typeof authLoginIndexRoute
   '/signup': typeof authSignupIndexRoute
+  '/dashboard/blog/edit/$id': typeof DashboardBlogEditIdRoute
+  '/dashboard/blog/posts': typeof DashboardBlogPostsIndexRoute
 }
 
 export interface FileRoutesById {
@@ -205,9 +223,10 @@ export interface FileRoutesById {
   '/users/me': typeof UsersMeRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/users/': typeof UsersIndexRoute
-  '/dashboard/blog/posts': typeof DashboardBlogPostsRoute
   '/(auth)/login/': typeof authLoginIndexRoute
   '/(auth)/signup/': typeof authSignupIndexRoute
+  '/dashboard/blog/edit/$id': typeof DashboardBlogEditIdRoute
+  '/dashboard/blog/posts/': typeof DashboardBlogPostsIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -218,18 +237,20 @@ export interface FileRouteTypes {
     | '/users/me'
     | '/dashboard/'
     | '/users'
-    | '/dashboard/blog/posts'
     | '/login'
     | '/signup'
+    | '/dashboard/blog/edit/$id'
+    | '/dashboard/blog/posts'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/users/me'
     | '/dashboard'
     | '/users'
-    | '/dashboard/blog/posts'
     | '/login'
     | '/signup'
+    | '/dashboard/blog/edit/$id'
+    | '/dashboard/blog/posts'
   id:
     | '__root__'
     | '/'
@@ -238,9 +259,10 @@ export interface FileRouteTypes {
     | '/users/me'
     | '/dashboard/'
     | '/users/'
-    | '/dashboard/blog/posts'
     | '/(auth)/login/'
     | '/(auth)/signup/'
+    | '/dashboard/blog/edit/$id'
+    | '/dashboard/blog/posts/'
   fileRoutesById: FileRoutesById
 }
 
@@ -291,7 +313,8 @@ export const routeTree = rootRoute
       "filePath": "dashboard/route.tsx",
       "children": [
         "/dashboard/",
-        "/dashboard/blog/posts"
+        "/dashboard/blog/edit/$id",
+        "/dashboard/blog/posts/"
       ]
     },
     "/users/me": {
@@ -304,10 +327,6 @@ export const routeTree = rootRoute
     "/users/": {
       "filePath": "users/index.tsx"
     },
-    "/dashboard/blog/posts": {
-      "filePath": "dashboard/blog/posts.tsx",
-      "parent": "/dashboard"
-    },
     "/(auth)/login/": {
       "filePath": "(auth)/login/index.tsx",
       "parent": "/(auth)"
@@ -315,6 +334,14 @@ export const routeTree = rootRoute
     "/(auth)/signup/": {
       "filePath": "(auth)/signup/index.tsx",
       "parent": "/(auth)"
+    },
+    "/dashboard/blog/edit/$id": {
+      "filePath": "dashboard/blog/edit/$id.tsx",
+      "parent": "/dashboard"
+    },
+    "/dashboard/blog/posts/": {
+      "filePath": "dashboard/blog/posts/index.tsx",
+      "parent": "/dashboard"
     }
   }
 }

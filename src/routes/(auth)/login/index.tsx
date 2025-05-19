@@ -1,14 +1,19 @@
-import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
-import { LoaderCircle } from "lucide-react";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { authClient } from "@/lib/auth-client";
-import css from "./login.module.css";
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { authClient } from '@/lib/auth-client';
+import { Link, createFileRoute, useNavigate } from '@tanstack/react-router';
+import { LoaderCircle } from 'lucide-react';
+import { useState } from 'react';
+import z from 'zod';
+import css from './login.module.css';
 
-export const Route = createFileRoute("/(auth)/login/")({
+export const Route = createFileRoute('/(auth)/login/')({
   component: LoginForm,
+});
+
+const loginFormSchema = z.object({
+  email: z.string().min(1, { message: 'Title is required' }),
 });
 
 function LoginForm() {
@@ -16,7 +21,7 @@ function LoginForm() {
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,13 +30,13 @@ function LoginForm() {
     }
 
     const formData = new FormData(e.currentTarget);
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
 
     if (!email || !password) return;
 
     setIsLoading(true);
-    setErrorMessage("");
+    setErrorMessage('');
 
     authClient.signIn.email(
       {
@@ -45,7 +50,7 @@ function LoginForm() {
           setIsLoading(false);
         },
         onSuccess: async () => {
-          await queryClient.invalidateQueries({ queryKey: ["user"] });
+          await queryClient.invalidateQueries({ queryKey: ['user'] });
           navigate({ to: redirectUrl });
         },
       },
@@ -55,7 +60,7 @@ function LoginForm() {
   return (
     // <div className={css.login_form_container}>
     <form onSubmit={handleSubmit} className={css.form}>
-      <div className={"text-center"}>
+      <div className={'text-center'}>
         <div className={css.logo} />
         <h1>Welcome back to Acme Inc.</h1>
       </div>
@@ -88,14 +93,14 @@ function LoginForm() {
       <div className={css.field}>
         <Button variant="default" type="submit" disabled={isLoading}>
           {isLoading && <LoaderCircle className="animate-spin" />}
-          {isLoading ? "Login..." : "Login"}
+          {isLoading ? 'Login...' : 'Login'}
         </Button>
       </div>
 
       {errorMessage && <span className="css.error_message">{errorMessage}</span>}
 
-      <div className={"text-center"}>
-        Don't have an account?{" "}
+      <div className={'text-center'}>
+        Don't have an account?{' '}
         <Link to="/signup" className="underline underline-offset-4">
           Sign up
         </Link>

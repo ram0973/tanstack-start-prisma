@@ -5,6 +5,7 @@ import pluginRouter from '@tanstack/eslint-plugin-router';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import * as reactHooks from 'eslint-plugin-react-hooks';
 import tseslint from 'typescript-eslint';
+import stylistic from '@stylistic/eslint-plugin'
 
 export default tseslint.config(
   {
@@ -32,6 +33,7 @@ export default tseslint.config(
     },
     ...react.configs['recommended-type-checked'],
   },
+  
   {
     rules: {
       // You can override any rules here

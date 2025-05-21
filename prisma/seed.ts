@@ -1,46 +1,27 @@
-import { prisma } from '@/lib/prisma'
-import { Prisma } from '@prisma/client'
+import { prisma } from '@/lib/prisma';
+import { faker } from '@faker-js/faker';
+import { Prisma } from '@prisma/client';
 
-const userData: Prisma.UserCreateInput[] = [
-  {
-    name: 'Alice',
-    email: 'alice@acme.co',
-    posts: {
-      create: [
-        {
-          title: 'Join the Prisma Discord',
-          content: 'https://pris.ly/discord',
-          published: true,
-        },
-        {
-          title: 'Prisma on YouTube',
-          content: 'https://pris.ly/youtube',
-          published: true,
-        },
-      ],
-    },
-    emailVerified: true,
+const fakedPosts: Prisma.PostUncheckedCreateWithoutAuthorInput[] = [];
+for (let index = 0; index < 100; index++) {
+  const post: Prisma.PostUncheckedCreateWithoutAuthorInput = {
+    title: faker.lorem.sentence(),
+    content: faker.lorem.paragraphs(5),
+    published: true,
+  };
+  fakedPosts.push(post)
+}
+const user: Prisma.UserCreateInput = {
+  name: faker.person.fullName(),
+  email: faker.internet.email(),
+  posts: {
+    create: fakedPosts
   },
-  {
-    name: 'Bob',
-    email: 'bob@acme.co',
-    posts: {
-      create: [
-        {
-          title: 'Follow Prisma on Twitter',
-          content: 'https://www.twitter.com/prisma',
-          published: true,
-        },
-      ],
-    },
-    emailVerified: false,
-  },
-]
+  emailVerified: true,
+};
 
 export async function main() {
-  for (const u of userData) {
-    await prisma.user.create({ data: u })
-  }
+  await prisma.user.create({ data: user });
 }
 
-main()
+main();

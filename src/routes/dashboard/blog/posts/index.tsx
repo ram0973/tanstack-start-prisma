@@ -29,7 +29,7 @@ import React from 'react'
 
 export const fetchPosts = createServerFn({ method: 'GET' })
   //.validator((data: string) => data)
-  .handler(async () => {
+  .handler(async (data: {}) => {
     const posts = await prisma.post.findMany({
       take: 10,
       skip: 0,
@@ -44,7 +44,7 @@ export const fetchPosts = createServerFn({ method: 'GET' })
   });
 
 export const Route = createFileRoute('/dashboard/blog/posts/')({
-  loader: async () => fetchPosts(),
+  loader: async ({ context }) => fetchPosts(context.data),
   component: PostsLayoutComponent,
 });
 

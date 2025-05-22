@@ -33,7 +33,7 @@ const postSearchSchema = z.object({
 });
 
 export const fetchPosts = createServerFn({ method: 'GET' })
-.handler(async ({data: search}) => {
+.handler(async ({'data': search}) => {
   console.log('fetchPosts', search)
   const { page, pageSize } = postSearchSchema.parse(search);
   console.info('Server function: ', page, pageSize)
@@ -52,7 +52,7 @@ export const Route = createFileRoute('/dashboard/blog/posts/')({
   validateSearch: postSearchSchema.parse,
   loaderDeps: ({ search: { page, pageSize } }) => ({ page, pageSize }),
   loader: ({ deps: { page, pageSize } }) =>
-    fetchPosts({data: {
+    fetchPosts({'data': {
       page,
       pageSize,
     }}),

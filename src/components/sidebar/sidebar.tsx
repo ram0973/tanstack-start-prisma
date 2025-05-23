@@ -32,7 +32,7 @@ const data = {
   projects: [
     {
       name: 'Posts',
-      url: '/dashboard/blog/posts',
+      url: '/dashboard/posts',
       icon: Newspaper,
     },
   ],

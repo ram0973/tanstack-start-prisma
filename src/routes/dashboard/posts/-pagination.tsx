@@ -15,15 +15,13 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-interface DataTablePaginationProps<TData> {
+interface PaginationProps<TData> {
   table: Table<TData>,
-  navigate: unknown
 }
 
-export function DataTablePagination<TData>({
+export function Pagination<TData>({
   table,
-  navigate
-}: DataTablePaginationProps<TData>) {
+}: PaginationProps<TData>) {
   return (
     <div className="flex items-center justify-between px-2">
       <div className="flex-1 text-sm text-muted-foreground">
@@ -37,12 +35,6 @@ export function DataTablePagination<TData>({
             value={`${table.getState().pagination.pageSize}`}
             onValueChange={(value) => {
               table.setPageSize(Number(value))
-              navigate({
-                search: {
-                  pageSize: Number(value),
-                  page: 0
-                },
-              });
             }}
           >
             <SelectTrigger className="h-8 w-[70px]">

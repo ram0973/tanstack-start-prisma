@@ -20,7 +20,7 @@ import { Route as UsersMeImport } from './routes/users/me'
 import { Route as DashboardPostsIndexImport } from './routes/dashboard/posts/index'
 import { Route as authSignupIndexImport } from './routes/(auth)/signup/index'
 import { Route as authLoginIndexImport } from './routes/(auth)/login/index'
-import { Route as DashboardEditIdImport } from './routes/dashboard/edit/$id'
+import { Route as DashboardPostsEditIdImport } from './routes/dashboard/posts/edit/$id'
 
 // Create/Update Routes
 
@@ -77,9 +77,9 @@ const authLoginIndexRoute = authLoginIndexImport.update({
   getParentRoute: () => authRouteRoute,
 } as any)
 
-const DashboardEditIdRoute = DashboardEditIdImport.update({
-  id: '/edit/$id',
-  path: '/edit/$id',
+const DashboardPostsEditIdRoute = DashboardPostsEditIdImport.update({
+  id: '/posts/edit/$id',
+  path: '/posts/edit/$id',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
 
@@ -129,13 +129,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersIndexImport
       parentRoute: typeof rootRoute
     }
-    '/dashboard/edit/$id': {
-      id: '/dashboard/edit/$id'
-      path: '/edit/$id'
-      fullPath: '/dashboard/edit/$id'
-      preLoaderRoute: typeof DashboardEditIdImport
-      parentRoute: typeof DashboardRouteImport
-    }
     '/(auth)/login/': {
       id: '/(auth)/login/'
       path: '/login'
@@ -155,6 +148,13 @@ declare module '@tanstack/react-router' {
       path: '/posts'
       fullPath: '/dashboard/posts'
       preLoaderRoute: typeof DashboardPostsIndexImport
+      parentRoute: typeof DashboardRouteImport
+    }
+    '/dashboard/posts/edit/$id': {
+      id: '/dashboard/posts/edit/$id'
+      path: '/posts/edit/$id'
+      fullPath: '/dashboard/posts/edit/$id'
+      preLoaderRoute: typeof DashboardPostsEditIdImport
       parentRoute: typeof DashboardRouteImport
     }
   }
@@ -178,14 +178,14 @@ const authRouteRouteWithChildren = authRouteRoute._addFileChildren(
 
 interface DashboardRouteRouteChildren {
   DashboardIndexRoute: typeof DashboardIndexRoute
-  DashboardEditIdRoute: typeof DashboardEditIdRoute
   DashboardPostsIndexRoute: typeof DashboardPostsIndexRoute
+  DashboardPostsEditIdRoute: typeof DashboardPostsEditIdRoute
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardIndexRoute: DashboardIndexRoute,
-  DashboardEditIdRoute: DashboardEditIdRoute,
   DashboardPostsIndexRoute: DashboardPostsIndexRoute,
+  DashboardPostsEditIdRoute: DashboardPostsEditIdRoute,
 }
 
 const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
@@ -198,10 +198,10 @@ export interface FileRoutesByFullPath {
   '/users/me': typeof UsersMeRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/users': typeof UsersIndexRoute
-  '/dashboard/edit/$id': typeof DashboardEditIdRoute
   '/login': typeof authLoginIndexRoute
   '/signup': typeof authSignupIndexRoute
   '/dashboard/posts': typeof DashboardPostsIndexRoute
+  '/dashboard/posts/edit/$id': typeof DashboardPostsEditIdRoute
 }
 
 export interface FileRoutesByTo {
@@ -209,10 +209,10 @@ export interface FileRoutesByTo {
   '/users/me': typeof UsersMeRoute
   '/dashboard': typeof DashboardIndexRoute
   '/users': typeof UsersIndexRoute
-  '/dashboard/edit/$id': typeof DashboardEditIdRoute
   '/login': typeof authLoginIndexRoute
   '/signup': typeof authSignupIndexRoute
   '/dashboard/posts': typeof DashboardPostsIndexRoute
+  '/dashboard/posts/edit/$id': typeof DashboardPostsEditIdRoute
 }
 
 export interface FileRoutesById {
@@ -223,10 +223,10 @@ export interface FileRoutesById {
   '/users/me': typeof UsersMeRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/users/': typeof UsersIndexRoute
-  '/dashboard/edit/$id': typeof DashboardEditIdRoute
   '/(auth)/login/': typeof authLoginIndexRoute
   '/(auth)/signup/': typeof authSignupIndexRoute
   '/dashboard/posts/': typeof DashboardPostsIndexRoute
+  '/dashboard/posts/edit/$id': typeof DashboardPostsEditIdRoute
 }
 
 export interface FileRouteTypes {
@@ -237,20 +237,20 @@ export interface FileRouteTypes {
     | '/users/me'
     | '/dashboard/'
     | '/users'
-    | '/dashboard/edit/$id'
     | '/login'
     | '/signup'
     | '/dashboard/posts'
+    | '/dashboard/posts/edit/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/users/me'
     | '/dashboard'
     | '/users'
-    | '/dashboard/edit/$id'
     | '/login'
     | '/signup'
     | '/dashboard/posts'
+    | '/dashboard/posts/edit/$id'
   id:
     | '__root__'
     | '/'
@@ -259,10 +259,10 @@ export interface FileRouteTypes {
     | '/users/me'
     | '/dashboard/'
     | '/users/'
-    | '/dashboard/edit/$id'
     | '/(auth)/login/'
     | '/(auth)/signup/'
     | '/dashboard/posts/'
+    | '/dashboard/posts/edit/$id'
   fileRoutesById: FileRoutesById
 }
 
@@ -313,8 +313,8 @@ export const routeTree = rootRoute
       "filePath": "dashboard/route.tsx",
       "children": [
         "/dashboard/",
-        "/dashboard/edit/$id",
-        "/dashboard/posts/"
+        "/dashboard/posts/",
+        "/dashboard/posts/edit/$id"
       ]
     },
     "/users/me": {
@@ -327,10 +327,6 @@ export const routeTree = rootRoute
     "/users/": {
       "filePath": "users/index.tsx"
     },
-    "/dashboard/edit/$id": {
-      "filePath": "dashboard/edit/$id.tsx",
-      "parent": "/dashboard"
-    },
     "/(auth)/login/": {
       "filePath": "(auth)/login/index.tsx",
       "parent": "/(auth)"
@@ -341,6 +337,10 @@ export const routeTree = rootRoute
     },
     "/dashboard/posts/": {
       "filePath": "dashboard/posts/index.tsx",
+      "parent": "/dashboard"
+    },
+    "/dashboard/posts/edit/$id": {
+      "filePath": "dashboard/posts/edit/$id.tsx",
       "parent": "/dashboard"
     }
   }

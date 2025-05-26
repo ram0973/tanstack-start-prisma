@@ -1,4 +1,5 @@
 import { AppSidebar } from '@/components/sidebar/sidebar';
+import ThemeToggle from '@/components/ThemeToggle';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -44,6 +45,9 @@ function DashboardLayout() {
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
+            <div className='flex'>
+              <ThemeToggle />
+            </div>  
           </header>
           <Outlet />
         </SidebarInset>

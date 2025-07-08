@@ -1,57 +1,66 @@
-import { AppSidebar } from '@/components/sidebar/sidebar';
-import ThemeToggle from '@/components/ThemeToggle';
+import { AppSidebar } from '@/components/AppSidebar'
+import { AvatarDropdown } from '@/components/navbar/AvatarDropdown'
+import { NavUser } from '@/components/NavUser'
+import ThemeToggle from '@/components/ThemeToggle'
+
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-import { Separator } from '@/components/ui/separator';
-import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-import { createFileRoute, Outlet, redirect } from '@tanstack/react-router';
+} from '@/components/ui/breadcrumb'
+import { Separator } from '@/components/ui/separator'
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
+import { Outlet, createFileRoute, useLocation } from '@tanstack/react-router'
+import { Fragment } from 'react/jsx-runtime'
 
 export const Route = createFileRoute('/dashboard')({
-  component: DashboardLayout,
-  beforeLoad: async ({ context }) => {
-    if (!context.user) {
-      throw redirect({ to: '/login' });
-    }
+  component: IndexComponent,
+})
 
-    // `context.queryClient` is also available in our loaders
-    // https://tanstack.com/start/latest/docs/framework/react/examples/start-basic-react-query
-    // https://tanstack.com/router/latest/docs/framework/react/guide/external-data-loading
-  },
-});
+function IndexComponent() {
+  const location = useLocation()
+  const pathname = location.pathname
+  const paths = pathname.split('/').filter(Boolean) // Убираем пустые элементы
+  const breadcrumbs = paths.map((path, index) => ({
+    label: path,
+    href: `/${paths.slice(0, index + 1).join('/')}`,
+  }))
 
-function DashboardLayout() {
   return (
-    <>
-      <SidebarProvider>
-        <AppSidebar />
-        <SidebarInset>
-          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
-            <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="mr-2 h-4" />
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="/">Home</BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Dashboard</BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
-            <div className='flex'>
-              <ThemeToggle />
-            </div>  
-          </header>
-          <Outlet />
-        </SidebarInset>
-      </SidebarProvider>
-    </>
-  );
+    <SidebarProvider>
+      <AppSidebar />
+      <main className="min-h-svh flex-1 p-4">
+        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+          <SidebarTrigger className="-ml-1" />
+          <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-4" />
+          <ThemeToggle />
+          <Breadcrumb>
+            <BreadcrumbList>
+              {/* Главный элемент (домашняя страница) */}
+              <BreadcrumbItem key="home">
+                <BreadcrumbLink href="/" className="text-sm capitalize">
+                  Home
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+
+              {/* Остальные элементы */}
+              {breadcrumbs.map((item) => (
+                <Fragment key={item.href}>
+                  <BreadcrumbSeparator key={`${item.href}-sep`} />
+                  <BreadcrumbItem>
+                    <BreadcrumbLink href={item.href} className="text-sm capitalize">
+                      {item.label}
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                </Fragment>
+              ))}
+            </BreadcrumbList>
+          </Breadcrumb>
+        </header>
+        <Outlet />
+      </main>
+    </SidebarProvider>
+  )
 }

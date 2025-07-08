@@ -1,32 +1,40 @@
-import { betterAuth } from 'better-auth'
-import { prismaAdapter } from 'better-auth/adapters/prisma'
-import { reactStartCookies } from 'better-auth/react-start'
-import { prisma } from './prisma'
+import { betterAuth } from 'better-auth';
+import { prismaAdapter } from 'better-auth/adapters/prisma';
+import { openAPI, admin } from 'better-auth/plugins';
+import { reactStartCookies } from 'better-auth/react-start';
+import { prisma } from './prisma';
 
 export const auth = betterAuth({
+  plugins: [reactStartCookies(), openAPI(), admin()],
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
   }),
-  emailAndPassword: {
-    enabled: true,
-  },
-  plugins: [reactStartCookies()],
-  // https://www.better-auth.com/docs/concepts/session-management#session-caching
   session: {
+    expiresIn: 60 * 60 * 24 * 7, // 7 days
+    updateAge: 60 * 60 * 24, // 1 day (every 1 day the session expiration is updated)
+    disableSessionRefresh: false,
     cookieCache: {
       enabled: true,
-      maxAge: 5 * 60, // 5 minutes
+      maxAge: 5 * 60, // Cache duration in seconds
     },
   },
-  // https://www.better-auth.com/docs/concepts/oauth
+  emailAndPassword: {
+    requireEmailVerification: false,
+    enabled: true,
+    autoSignIn: true,
+  },
   socialProviders: {
     github: {
-      clientId: process.env.GITHUB_CLIENT_ID!,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+      clientId: import.meta.env.VITE_GITHUB_CLIENT_ID as string,
+      clientSecret: import.meta.env.VITE_GITHUB_CLIENT_SECRET as string,
+    },
+    vk: {
+      clientId: import.meta.env.VITE_VK_CLIENT_ID as string,
+      clientSecret: import.meta.env.VITE_VK_CLIENT_SECRET as string,
     },
     google: {
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID as string,
+      clientSecret: import.meta.env.VITE_GOOGLE_CLIENT_SECRET as string,
     },
   },
-})
+});

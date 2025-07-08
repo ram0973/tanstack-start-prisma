@@ -1,5 +1,9 @@
-import { createAuthClient } from 'better-auth/react'
+import { adminClient } from 'better-auth/client/plugins';
+import { createAuthClient } from 'better-auth/react';
+import { env } from './env';
+
 export const authClient = createAuthClient({
-  /** The base URL of the server (optional if you're using the same domain) */
-  baseURL: process.env.VITE_BASE_URL
-})
+  baseURL: env.VITE_BETTER_AUTH_URL,
+  redirectTo: '/',
+  plugins: [adminClient()],
+});

@@ -6,18 +6,20 @@
     "jsx": "react-jsx",
     "module": "ESNext",
     "moduleResolution": "Bundler",
+		//"moduleResolution": "Node",
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "isolatedModules": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "target": "ES2022",
+    "target": "ES2024",
     "allowJs": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
+		"allowSyntheticDefaultImports": true,
+		"strictNullChecks": true,
+    //"baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
-    "noEmit": true,
-    "strictNullChecks": true
+    "noEmit": true
   }
 }

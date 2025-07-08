@@ -1,142 +1,143 @@
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import type { Post } from '@prisma/client'
+import type { ColumnDef } from '@tanstack/react-table'
+import { format } from 'date-fns'
+
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Post } from '@prisma/client';
-import { DialogTrigger } from '@/components/ui/dialog';
-import { Link } from '@tanstack/react-router';
-import { ColumnDef } from '@tanstack/react-table';
-import { format } from 'date-fns';
-import { ru } from 'date-fns/locale'; // для русской локализации
-import { ArrowDown, ArrowUp, ArrowUpDown, MoreHorizontal } from 'lucide-react';
+	AlertDialog,
+	AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
+import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { Link } from '@tanstack/react-router'
+import { ArrowDown, ArrowUp, ArrowUpDown, MoreHorizontal } from 'lucide-react'
+import { DeletePostDialog } from './-DeletePostDialog'
 
 export const columns: ColumnDef<Post>[] = [
-  {
-    accessorKey: 'id',
-    header: ({ column }) => {
-      const isSorted = column.getIsSorted();
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => {
-            column.toggleSorting(column.getIsSorted() === 'asc');
-          }}
-        >
-          Id
-          {!isSorted && <ArrowUpDown className="ml-2 h-4 w-4" />}
-          {isSorted === 'asc' && <ArrowUp className="ml-2 h-4 w-4" />}
-          {isSorted === 'desc' && <ArrowDown className="ml-2 h-4 w-4" />}
-        </Button>
-      );
-    },
-    //cell: (info) => info.getValue(),
-    //header: () => <span>Id</span>,
-    //footer: (props) => props.column.id,
-  },
-  {
-    accessorKey: 'title',
-    header: ({ column }) => {
-      const isSorted = column.getIsSorted();
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => {
-            column.toggleSorting(column.getIsSorted() === 'asc');
-          }}
-        >
-          Title
-          {!isSorted && <ArrowUpDown className="ml-2 h-4 w-4" />}
-          {isSorted === 'asc' && <ArrowUp className="ml-2 h-4 w-4" />}
-          {isSorted === 'desc' && <ArrowDown className="ml-2 h-4 w-4" />}
-        </Button>
-      );
-    },
-    //accessorFn: (row) => row.title,
-    //id: 'title',
-    //cell: (info) => info.getValue(),
-    //header: () => <span>Title</span>,
-    //footer: (props) => props.column.id,
-  },
-  {
-    accessorKey: 'createdAt',
-    header: ({ column }) => {
-      const isSorted = column.getIsSorted();
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => {
-            column.toggleSorting(column.getIsSorted() === 'asc');
-          }}
-        >
-          Created
-          {!isSorted && <ArrowUpDown className="ml-2 h-4 w-4" />}
-          {isSorted === 'asc' && <ArrowUp className="ml-2 h-4 w-4" />}
-          {isSorted === 'desc' && <ArrowDown className="ml-2 h-4 w-4" />}
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      const date = new Date(row.getValue('createdAt'));
-      // TODO: auto locale
-      return format(date, 'dd.MM.yyyy HH:mm', { locale: ru });
-    },
-    //accessorKey: 'createdAt',
-    //header: () => 'Created at',
-    //footer: (props) => props.column.id,
-  },
-  {
-    id: 'actions',
-    header: 'Actions',
-    cell: ({ row }) => {
-      const postId = row.original.id;
-
-      return (
-        <Dialog>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <Link to="/dashboard/posts/edit/$postId" params={{ postId }}>
-                  <Button variant="outline">Edit post</Button>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <DialogTrigger asChild>
-                  <Button variant="outline">Delete post</Button>
-                </DialogTrigger>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>Delete post</DialogTitle>
-              <DialogDescription>
-                
-              </DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              Are you sure?
-            </div>
-            <DialogFooter>
-              <Button type="submit" variant={"destructive"}>Delete</Button>
-              <Button type="button">Cancel</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      );
-    },
-  },
-];
+	{
+		id: 'select',
+		header: ({ table }) => (
+			<Checkbox
+				checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
+				onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+				aria-label="Select all"
+			/>
+		),
+		cell: ({ row }) => (
+			<Checkbox
+				checked={row.getIsSelected()}
+				onCheckedChange={(value) => row.toggleSelected(!!value)}
+				aria-label="Select row"
+			/>
+		),
+		enableSorting: false,
+		enableHiding: false,
+	},
+	{
+		accessorKey: 'title',
+		meta: 'Title',
+		header: ({ column }) => {
+			const isSorted = column.getIsSorted()
+			return (
+				<div className="">
+					<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+						Title
+						{!isSorted && <ArrowUpDown className="h-4 w-4" />}
+						{isSorted === 'asc' && <ArrowUp className="h-4 w-4" />}
+						{isSorted === 'desc' && <ArrowDown className="h-4 w-4" />}
+					</Button>
+				</div>
+			)
+		},
+		cell: ({ row }) => {
+			return <div className="font-medium">{row.getValue('title')}</div>
+		},
+	},
+	{
+		accessorKey: 'slug',
+		meta: 'Slug',
+		header: ({ column }) => {
+			const isSorted = column.getIsSorted()
+			return (
+				<div className="">
+					<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+						Slug
+						{!isSorted && <ArrowUpDown className="h-4 w-4" />}
+						{isSorted === 'asc' && <ArrowUp className="h-4 w-4" />}
+						{isSorted === 'desc' && <ArrowDown className="h-4 w-4" />}
+					</Button>
+				</div>
+			)
+		},
+		cell: ({ row }) => {
+			return <div className="font-medium">{row.getValue('slug')}</div>
+		},
+	},
+	{
+		accessorKey: 'createdAt',
+		meta: 'Created',
+		header: ({ column }) => {
+			const isSorted = column.getIsSorted()
+			return (
+				<div className="">
+					<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+						Created
+						{!isSorted && <ArrowUpDown className="h-4 w-4" />}
+						{isSorted === 'asc' && <ArrowUp className="h-4 w-4" />}
+						{isSorted === 'desc' && <ArrowDown className="h-4 w-4" />}
+					</Button>
+				</div>
+			)
+		},
+		cell: ({ row }) => {
+			const createdAt = format(Date.parse(row.getValue('createdAt')), 'dd.MM.yyyy hh:mm')
+			return <div className="font-medium">{createdAt}</div>
+		},
+	},
+	{
+		id: 'actions',
+		cell: ({ row }) => {
+			const id = row.original.id
+			const slug = row.original.slug
+			return (
+				<AlertDialog>
+					<DropdownMenu>
+						<DropdownMenuTrigger asChild>
+							<Button variant="ghost" className="h-8 w-8 p-0">
+								<span className="sr-only">Open menu</span>
+								<MoreHorizontal className="h-4 w-4" />
+							</Button>
+						</DropdownMenuTrigger>
+						<DropdownMenuContent align="end">
+							<DropdownMenuLabel>Actions</DropdownMenuLabel>
+							<DropdownMenuItem>
+								<Link to={"/dashboard/posts/update/$postId"} params={{ postId: id }}>
+									Update post
+								</Link>
+							</DropdownMenuItem>
+							<DropdownMenuItem>
+								<Link to={"/posts/$slug"} params={{ slug: slug }}>
+									View post
+								</Link>
+							</DropdownMenuItem>
+							<DropdownMenuSeparator />
+							<AlertDialogTrigger className="w-full">
+								<DropdownMenuItem	variant="destructive">
+									Delete post
+								</DropdownMenuItem>
+							</AlertDialogTrigger>
+						</DropdownMenuContent>
+					</DropdownMenu>
+					<DeletePostDialog id={id} />
+				</AlertDialog>
+			)
+		},
+	},
+]

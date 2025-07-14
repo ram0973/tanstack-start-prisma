@@ -4,9 +4,11 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from '@/components/ui/input'
 import { createPost } from '@/server/posts'
 import { uploadImage } from '@/server/uploads'
+import { createHighlighter } from '@/shiki.bundle'
 import { CreatePost } from '@/types/posts/CreatePost'
-import { useBlockNote, useCreateBlockNote } from "@blocknote/react"
+import { useCreateBlockNote } from "@blocknote/react"
 import { zodResolver } from '@hookform/resolvers/zod'
+import slugify from '@sindresorhus/slugify'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createFileRoute, ErrorComponent, type ErrorComponentProps, useRouter } from '@tanstack/react-router'
 import { useServerFn } from '@tanstack/react-start'
@@ -14,7 +16,6 @@ import { CircleAlert, LoaderCircle } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import type { z } from 'zod'
-import { createHighlighter } from '@/shiki.bundle'
 
 export const Route = createFileRoute('/dashboard/posts/create')({
 	component: CreatePostForm,
@@ -53,7 +54,6 @@ function CreatePostForm() {
 			return result.data?.url || "";
 		},
 		codeBlock: {
-
 			indentLineWithTab: true,
 			defaultLanguage: "typescript",
 			supportedLanguages: {
@@ -75,6 +75,7 @@ function CreatePostForm() {
 					themes: ['github-dark-dimmed', 'github-light-default'],
 					langs: ['typescript', 'javascript', 'java',],
 				}),
+
 		},
 	})
 
@@ -82,6 +83,9 @@ function CreatePostForm() {
 		try {
 			values.contentJson = JSON.stringify(editor.document)
 			values.content = await editor.blocksToHTMLLossy(editor.document)
+			if (!values.slug || values.slug.trim() === '') {
+				values.slug = slugify(values.title, { lowercase: true, customReplacements: [['.', '']] })
+			}
 			await createPostMutation.mutateAsync({ data: values })
 			toast('Post has been created')
 			router.invalidate()

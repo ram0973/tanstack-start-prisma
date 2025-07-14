@@ -17,6 +17,7 @@ import { useServerFn } from '@tanstack/react-start'
 import { CircleAlert, LoaderCircle } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import slugify from '@sindresorhus/slugify'
 import { toast } from 'sonner'
 import type { z } from 'zod'
 
@@ -162,6 +163,9 @@ const UpdatePostForm = ({ post }: { post: z.infer<typeof UpdatePost> }) => {
 			// ДОБАВИТЬ ВОТ ЭТИ ИЗМЕНЕНИЯ в ПОЛЯХ формы при изменении текста в редакторе
 			values.contentJson = JSON.stringify(editor.document)
 			values.content = await editor.blocksToHTMLLossy(editor.document)
+			if (!values.slug || values.slug.trim() === '') {
+				values.slug = slugify(values.title, {lowercase: true, customReplacements: [['.', '']]})
+			}
 			await updatePostMutation.mutateAsync({ data: values })
 			toast('Post has been updated')
 			router.invalidate()

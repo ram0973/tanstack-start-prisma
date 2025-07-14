@@ -4,10 +4,9 @@ export const UpdatePost = z.object({
   id: z.string(),
   slug: z
     .string()
-    .trim()
-    .min(2, 'Slug must be at least 2 characters.')
+		.trim()
     .max(254, 'Slug must be less than 254 characters.')
-    .regex(/^[a-z0-9-]+$/, 'Slug may contain only lowercase letters, numbers and dashes'),
+    .regex(/^[a-z0-9-]*$/, 'Slug may contain only lowercase letters, numbers and dashes'),
   title: z
     .string()
     .trim()

@@ -19,6 +19,7 @@ import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as homeIndexRouteImport } from './routes/(home)/index'
 import { Route as DashboardUsersIndexRouteImport } from './routes/dashboard/users/index'
 import { Route as DashboardPostsIndexRouteImport } from './routes/dashboard/posts/index'
+import { Route as authVerifyEmailResultIndexRouteImport } from './routes/(auth)/verify-email-result/index'
 import { Route as authSignupIndexRouteImport } from './routes/(auth)/signup/index'
 import { Route as authSigninIndexRouteImport } from './routes/(auth)/signin/index'
 import { Route as DashboardPostsCreateRouteImport } from './routes/dashboard/posts/create'
@@ -67,6 +68,12 @@ const DashboardPostsIndexRoute = DashboardPostsIndexRouteImport.update({
   path: '/posts/',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
+const authVerifyEmailResultIndexRoute =
+  authVerifyEmailResultIndexRouteImport.update({
+    id: '/verify-email-result/',
+    path: '/verify-email-result/',
+    getParentRoute: () => authRouteRoute,
+  } as any)
 const authSignupIndexRoute = authSignupIndexRouteImport.update({
   id: '/signup/',
   path: '/signup/',
@@ -114,6 +121,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/posts/create': typeof DashboardPostsCreateRoute
   '/signin': typeof authSigninIndexRoute
   '/signup': typeof authSignupIndexRoute
+  '/verify-email-result': typeof authVerifyEmailResultIndexRoute
   '/dashboard/posts': typeof DashboardPostsIndexRoute
   '/dashboard/users': typeof DashboardUsersIndexRoute
   '/dashboard/posts/update/$postId': typeof DashboardPostsUpdatePostIdRoute
@@ -127,6 +135,7 @@ export interface FileRoutesByTo {
   '/dashboard/posts/create': typeof DashboardPostsCreateRoute
   '/signin': typeof authSigninIndexRoute
   '/signup': typeof authSignupIndexRoute
+  '/verify-email-result': typeof authVerifyEmailResultIndexRoute
   '/dashboard/posts': typeof DashboardPostsIndexRoute
   '/dashboard/users': typeof DashboardUsersIndexRoute
   '/dashboard/posts/update/$postId': typeof DashboardPostsUpdatePostIdRoute
@@ -144,6 +153,7 @@ export interface FileRoutesById {
   '/dashboard/posts/create': typeof DashboardPostsCreateRoute
   '/(auth)/signin/': typeof authSigninIndexRoute
   '/(auth)/signup/': typeof authSignupIndexRoute
+  '/(auth)/verify-email-result/': typeof authVerifyEmailResultIndexRoute
   '/dashboard/posts/': typeof DashboardPostsIndexRoute
   '/dashboard/users/': typeof DashboardUsersIndexRoute
   '/dashboard/posts/update/$postId': typeof DashboardPostsUpdatePostIdRoute
@@ -160,6 +170,7 @@ export interface FileRouteTypes {
     | '/dashboard/posts/create'
     | '/signin'
     | '/signup'
+    | '/verify-email-result'
     | '/dashboard/posts'
     | '/dashboard/users'
     | '/dashboard/posts/update/$postId'
@@ -173,6 +184,7 @@ export interface FileRouteTypes {
     | '/dashboard/posts/create'
     | '/signin'
     | '/signup'
+    | '/verify-email-result'
     | '/dashboard/posts'
     | '/dashboard/users'
     | '/dashboard/posts/update/$postId'
@@ -189,6 +201,7 @@ export interface FileRouteTypes {
     | '/dashboard/posts/create'
     | '/(auth)/signin/'
     | '/(auth)/signup/'
+    | '/(auth)/verify-email-result/'
     | '/dashboard/posts/'
     | '/dashboard/users/'
     | '/dashboard/posts/update/$postId'
@@ -281,6 +294,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardPostsIndexRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
+    '/(auth)/verify-email-result/': {
+      id: '/(auth)/verify-email-result/'
+      path: '/verify-email-result'
+      fullPath: '/verify-email-result'
+      preLoaderRoute: typeof authVerifyEmailResultIndexRouteImport
+      parentRoute: typeof authRouteRoute
+    }
     '/(auth)/signup/': {
       id: '/(auth)/signup/'
       path: '/signup'
@@ -340,11 +360,13 @@ declare module '@tanstack/react-start/server' {
 interface authRouteRouteChildren {
   authSigninIndexRoute: typeof authSigninIndexRoute
   authSignupIndexRoute: typeof authSignupIndexRoute
+  authVerifyEmailResultIndexRoute: typeof authVerifyEmailResultIndexRoute
 }
 
 const authRouteRouteChildren: authRouteRouteChildren = {
   authSigninIndexRoute: authSigninIndexRoute,
   authSignupIndexRoute: authSignupIndexRoute,
+  authVerifyEmailResultIndexRoute: authVerifyEmailResultIndexRoute,
 }
 
 const authRouteRouteWithChildren = authRouteRoute._addFileChildren(

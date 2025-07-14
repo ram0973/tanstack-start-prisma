@@ -13,6 +13,7 @@ import { useSignIn } from '@/hooks/auth-hooks'
 import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { Logo } from '@/components/Logo'
+import { FormPasswordInput } from '@/components/FormPasswordInput'
 
 export const Route = createFileRoute('/(auth)/signin/')({
   component: SignInForm,
@@ -76,7 +77,7 @@ function SignInForm() {
               </FormItem>
             )}
           />
-          <FormField
+          {/* <FormField
             control={form.control}
             name="password"
             render={({ field }) => (
@@ -88,7 +89,8 @@ function SignInForm() {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
+					<FormPasswordInput form={form} label="" name="password" placeholder='Enter password'/>
           <FormField
             control={form.control}
             name="rememberMe"

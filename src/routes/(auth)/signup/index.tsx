@@ -12,6 +12,7 @@ import { Logo } from '@/components/Logo'
 import { useSignUp } from '@/hooks/auth-hooks'
 import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { toast } from 'sonner'
+import { FormPasswordInput } from '@/components/FormPasswordInput'
 
 export const Route = createFileRoute('/(auth)/signup/')({
   component: SignUpForm,
@@ -94,7 +95,7 @@ function SignUpForm() {
               </FormItem>
             )}
           />
-          <FormField
+          {/* <FormField
             control={form.control}
             name="password"
             render={({ field }) => (
@@ -106,8 +107,10 @@ function SignUpForm() {
                 <FormMessage />
               </FormItem>
             )}
-          />
-          <FormField
+          /> */}
+					<FormPasswordInput form={form} label="" name="password" placeholder='Enter password'/>
+					<FormPasswordInput form={form} label="Confirm password" name="confirmPassword" placeholder='Repeat password'/>
+          {/* <FormField
             control={form.control}
             name="confirmPassword"
             render={({ field }) => (
@@ -119,7 +122,7 @@ function SignUpForm() {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
           <Button type="submit" disabled={form.formState.isSubmitting}>
             {form.formState.isSubmitting && <LoaderCircle className="animate-spin" />}
             {form.formState.isSubmitting ? 'Sign up...' : 'Sign up'}

@@ -28,7 +28,7 @@ const postQueryOptions = (id: string) =>
 	});
 
 export const Route = createFileRoute('/dashboard/posts/update/$postId')({
-	ssr: 'data-only',
+	//ssr: 'data-only',
 	loader: async ({ context, params: { postId } }) => {
 		await context.queryClient.ensureQueryData(postQueryOptions(postId))
 	},

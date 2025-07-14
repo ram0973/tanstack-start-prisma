@@ -6,6 +6,7 @@ import { prisma } from './prisma'
 import { VerifyEmail } from '@/components/emails/verify-email'
 import { sendEmailByGmail } from './email'
 import { toast } from 'sonner'
+import { ResetPasswordEmail } from '@/components/emails/reset-password-email'
 
 export const auth = betterAuth({
   plugins: [reactStartCookies(), openAPI(), admin()],
@@ -28,21 +29,19 @@ export const auth = betterAuth({
     minPasswordLength: 1,
     maxPasswordLength: 128,
     autoSignIn: false,
-    sendResetPassword: async ({ user, url, token }) => {
-      // Send reset password email
+    sendResetPassword: async ({user, url, token}, request) => {
+      await sendEmailByGmail({
+        to: user.email,
+        subject: "Reset your password",
+				template: ResetPasswordEmail({
+          resetLink: url,
+          username: user.email,
+        }),
+      });
     },
     resetPasswordTokenExpiresIn: 300, // 5 minutes
   },
   emailVerification: {
-    //  onSuccess: (user) => {
-    //   auth.setState({ user });
-    //   window.location.href = "/verify-email-result?status=verified";
-    // 	toast("Good")
-    // },
-    // onError: (error) => {
-    //   window.location.href = `/verify-email-result?error=${error.code}`;
-    // 	toast("Bad")
-    // },
     autoSignInAfterVerification: true,
     expiresIn: 60 * 60 * 24, // 24 hours
     sendOnSignUp: true,

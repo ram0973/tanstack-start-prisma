@@ -18,7 +18,7 @@ import { toast } from 'sonner'
 import type { z } from 'zod'
 
 export const Route = createFileRoute('/dashboard/posts/create')({
-	ssr: 'data-only',
+	//ssr: 'data-only',
 	component: CreatePostForm,
 	errorComponent: PostErrorComponent,
 })

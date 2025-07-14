@@ -21,7 +21,7 @@ function RouteComponent() {
 						? "Link expired. Get a new link."
 						: "Invalid link"}
 				</p>
-				<Button>
+				<Button onClick={() => { router.navigate({ to: "/send-verification-email" }) }}>
 					Resend
 				</Button>
 			</div>

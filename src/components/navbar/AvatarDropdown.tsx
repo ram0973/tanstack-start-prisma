@@ -31,7 +31,7 @@ export const AvatarDropdown = () => {
           <DropdownMenuLabel>{me.user.email}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
-            <LayoutIcon /><Link to="/dashboard/users">Dashboard</Link>
+            <LayoutIcon /><Link to="/dashboard/posts">Dashboard</Link>
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={(e) => {

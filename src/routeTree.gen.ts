@@ -22,6 +22,9 @@ import { Route as DashboardPostsIndexRouteImport } from './routes/dashboard/post
 import { Route as authVerifyEmailResultIndexRouteImport } from './routes/(auth)/verify-email-result/index'
 import { Route as authSignupIndexRouteImport } from './routes/(auth)/signup/index'
 import { Route as authSigninIndexRouteImport } from './routes/(auth)/signin/index'
+import { Route as authSendVerificationEmailIndexRouteImport } from './routes/(auth)/send-verification-email/index'
+import { Route as authSendPaswordResetEmailIndexRouteImport } from './routes/(auth)/send-pasword-reset-email/index'
+import { Route as authResetPasswordIndexRouteImport } from './routes/(auth)/reset-password/index'
 import { Route as DashboardPostsCreateRouteImport } from './routes/dashboard/posts/create'
 import { Route as homePostsSlugRouteImport } from './routes/(home)/posts/$slug'
 import { Route as DashboardUsersUpdateUserIdRouteImport } from './routes/dashboard/users/update.$userId'
@@ -84,6 +87,23 @@ const authSigninIndexRoute = authSigninIndexRouteImport.update({
   path: '/signin/',
   getParentRoute: () => authRouteRoute,
 } as any)
+const authSendVerificationEmailIndexRoute =
+  authSendVerificationEmailIndexRouteImport.update({
+    id: '/send-verification-email/',
+    path: '/send-verification-email/',
+    getParentRoute: () => authRouteRoute,
+  } as any)
+const authSendPaswordResetEmailIndexRoute =
+  authSendPaswordResetEmailIndexRouteImport.update({
+    id: '/send-pasword-reset-email/',
+    path: '/send-pasword-reset-email/',
+    getParentRoute: () => authRouteRoute,
+  } as any)
+const authResetPasswordIndexRoute = authResetPasswordIndexRouteImport.update({
+  id: '/reset-password/',
+  path: '/reset-password/',
+  getParentRoute: () => authRouteRoute,
+} as any)
 const DashboardPostsCreateRoute = DashboardPostsCreateRouteImport.update({
   id: '/posts/create',
   path: '/posts/create',
@@ -119,6 +139,9 @@ export interface FileRoutesByFullPath {
   '/dashboard/': typeof DashboardIndexRoute
   '/posts/$slug': typeof homePostsSlugRoute
   '/dashboard/posts/create': typeof DashboardPostsCreateRoute
+  '/reset-password': typeof authResetPasswordIndexRoute
+  '/send-pasword-reset-email': typeof authSendPaswordResetEmailIndexRoute
+  '/send-verification-email': typeof authSendVerificationEmailIndexRoute
   '/signin': typeof authSigninIndexRoute
   '/signup': typeof authSignupIndexRoute
   '/verify-email-result': typeof authVerifyEmailResultIndexRoute
@@ -133,6 +156,9 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardIndexRoute
   '/posts/$slug': typeof homePostsSlugRoute
   '/dashboard/posts/create': typeof DashboardPostsCreateRoute
+  '/reset-password': typeof authResetPasswordIndexRoute
+  '/send-pasword-reset-email': typeof authSendPaswordResetEmailIndexRoute
+  '/send-verification-email': typeof authSendVerificationEmailIndexRoute
   '/signin': typeof authSigninIndexRoute
   '/signup': typeof authSignupIndexRoute
   '/verify-email-result': typeof authVerifyEmailResultIndexRoute
@@ -151,6 +177,9 @@ export interface FileRoutesById {
   '/dashboard/': typeof DashboardIndexRoute
   '/(home)/posts/$slug': typeof homePostsSlugRoute
   '/dashboard/posts/create': typeof DashboardPostsCreateRoute
+  '/(auth)/reset-password/': typeof authResetPasswordIndexRoute
+  '/(auth)/send-pasword-reset-email/': typeof authSendPaswordResetEmailIndexRoute
+  '/(auth)/send-verification-email/': typeof authSendVerificationEmailIndexRoute
   '/(auth)/signin/': typeof authSigninIndexRoute
   '/(auth)/signup/': typeof authSignupIndexRoute
   '/(auth)/verify-email-result/': typeof authVerifyEmailResultIndexRoute
@@ -168,6 +197,9 @@ export interface FileRouteTypes {
     | '/dashboard/'
     | '/posts/$slug'
     | '/dashboard/posts/create'
+    | '/reset-password'
+    | '/send-pasword-reset-email'
+    | '/send-verification-email'
     | '/signin'
     | '/signup'
     | '/verify-email-result'
@@ -182,6 +214,9 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/posts/$slug'
     | '/dashboard/posts/create'
+    | '/reset-password'
+    | '/send-pasword-reset-email'
+    | '/send-verification-email'
     | '/signin'
     | '/signup'
     | '/verify-email-result'
@@ -199,6 +234,9 @@ export interface FileRouteTypes {
     | '/dashboard/'
     | '/(home)/posts/$slug'
     | '/dashboard/posts/create'
+    | '/(auth)/reset-password/'
+    | '/(auth)/send-pasword-reset-email/'
+    | '/(auth)/send-verification-email/'
     | '/(auth)/signin/'
     | '/(auth)/signup/'
     | '/(auth)/verify-email-result/'
@@ -315,6 +353,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authSigninIndexRouteImport
       parentRoute: typeof authRouteRoute
     }
+    '/(auth)/send-verification-email/': {
+      id: '/(auth)/send-verification-email/'
+      path: '/send-verification-email'
+      fullPath: '/send-verification-email'
+      preLoaderRoute: typeof authSendVerificationEmailIndexRouteImport
+      parentRoute: typeof authRouteRoute
+    }
+    '/(auth)/send-pasword-reset-email/': {
+      id: '/(auth)/send-pasword-reset-email/'
+      path: '/send-pasword-reset-email'
+      fullPath: '/send-pasword-reset-email'
+      preLoaderRoute: typeof authSendPaswordResetEmailIndexRouteImport
+      parentRoute: typeof authRouteRoute
+    }
+    '/(auth)/reset-password/': {
+      id: '/(auth)/reset-password/'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof authResetPasswordIndexRouteImport
+      parentRoute: typeof authRouteRoute
+    }
     '/dashboard/posts/create': {
       id: '/dashboard/posts/create'
       path: '/posts/create'
@@ -358,12 +417,18 @@ declare module '@tanstack/react-start/server' {
 }
 
 interface authRouteRouteChildren {
+  authResetPasswordIndexRoute: typeof authResetPasswordIndexRoute
+  authSendPaswordResetEmailIndexRoute: typeof authSendPaswordResetEmailIndexRoute
+  authSendVerificationEmailIndexRoute: typeof authSendVerificationEmailIndexRoute
   authSigninIndexRoute: typeof authSigninIndexRoute
   authSignupIndexRoute: typeof authSignupIndexRoute
   authVerifyEmailResultIndexRoute: typeof authVerifyEmailResultIndexRoute
 }
 
 const authRouteRouteChildren: authRouteRouteChildren = {
+  authResetPasswordIndexRoute: authResetPasswordIndexRoute,
+  authSendPaswordResetEmailIndexRoute: authSendPaswordResetEmailIndexRoute,
+  authSendVerificationEmailIndexRoute: authSendVerificationEmailIndexRoute,
   authSigninIndexRoute: authSigninIndexRoute,
   authSignupIndexRoute: authSignupIndexRoute,
   authVerifyEmailResultIndexRoute: authVerifyEmailResultIndexRoute,

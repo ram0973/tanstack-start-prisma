@@ -9,21 +9,23 @@ import { Input } from '@/components/ui/input'
 import { CircleAlert, LoaderCircle } from 'lucide-react'
 
 import { Logo } from '@/components/Logo'
-import { useSignUp } from '@/hooks/auth-hooks'
+import { useResetPassword, useSignUp } from '@/hooks/auth-hooks'
 import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { FormPasswordInput } from '@/components/FormPasswordInput'
 import { FormEmailInput } from '@/components/FormEmailInput'
 import { FormInput } from '@/components/FormInput'
 
-export const Route = createFileRoute('/(auth)/signup/')({
-  component: SignUpForm,
+export const Route = createFileRoute('/(auth)/reset-password/')({
+	validateSearch: (search: Record<string, unknown>) => ({
+		token: search.token as "token_expired" | "invalid_token" | undefined,
+	}),
+  component: ResetPasswordForm,
 })
 
 const zSignUpTrpcInput = z
   .object({
-    name: z.string().min(1),
-    email: z.string().email(),
+		oldPassword: z.string().min(1),
     password: z.string().min(1),
     confirmPassword: z.string().min(1),
   })
@@ -32,24 +34,26 @@ const zSignUpTrpcInput = z
     path: ['confirmPassword'],
   })
 
-function SignUpForm() {
+function ResetPasswordForm() {
   const form = useForm<z.infer<typeof zSignUpTrpcInput>>({
     resolver: zodResolver(zSignUpTrpcInput),
     defaultValues: {
-      name: '',
-      email: '',
+      oldPassword: '',
       password: '',
       confirmPassword: '',
     },
   })
   const router = useRouter()
-  const signUp = useSignUp()
+  const resetPassword = useResetPassword()
+	const { token } = Route.useSearch();
+	if (!token) {
+  	throw Error('Bad or missing password reset token')
+	}
   async function onSubmit(values: z.infer<typeof zSignUpTrpcInput>) {
     try {
-      await signUp.mutateAsync({
-        name: values.name,
-        email: values.email,
-        password: values.password,
+      await resetPassword.mutateAsync({
+        newPassword: values.password,
+        token,
       })
       router.navigate({ to: '/' })
     } catch (error) {
@@ -69,15 +73,14 @@ function SignUpForm() {
             <Logo className="h-12 w-12" />
           </div>
           <div className={'text-center font-bold text-lg'}>
-            <h1>Sign up for Acme Inc.</h1>
+            <h1>Reset password</h1>
           </div>
-					<FormInput form={form} label="Name" name="name" placeholder='John Doe'/>
-					<FormEmailInput form={form} label="Email" name="email" placeholder='hello@example.com'/>
-					<FormPasswordInput form={form} label="Password" name="password" placeholder='Enter password'/>
+					<FormPasswordInput form={form} label="Old password" name="password" placeholder='Enter old password'/>
+					<FormPasswordInput form={form} label="Password" name="password" placeholder='Enter new password'/>
 					<FormPasswordInput form={form} label="Confirm password" name="confirmPassword" placeholder='Repeat password'/>
           <Button type="submit" disabled={form.formState.isSubmitting}>
             {form.formState.isSubmitting && <LoaderCircle className="animate-spin" />}
-            {form.formState.isSubmitting ? 'Sign up...' : 'Sign up'}
+            {form.formState.isSubmitting ? 'Reset...' : 'Reset'}
           </Button>
         </form>
       </Form>

@@ -18,7 +18,7 @@ const Navbar = () => {
       <nav className="h-16 border-b bg-background">
         <div className="mx-auto flex h-full max-w-screen-xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-8">
-            <Logo />
+            <Logo className="h-6 w-6" />
             {/* Desktop Menu */}
             <NavMenu className="hidden md:block" />
           </div>

@@ -8,12 +8,13 @@ import { Input } from '@/components/ui/input'
 
 import { CircleAlert, LoaderCircle } from 'lucide-react'
 
+import { FormPasswordInput } from '@/components/FormPasswordInput'
+import { Logo } from '@/components/Logo'
 import { Switch } from '@/components/ui/switch'
-import { useSignIn } from '@/hooks/auth-hooks'
+import { useSendPasswordResetEmail, useSignIn } from '@/hooks/auth-hooks'
 import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { toast } from 'sonner'
-import { Logo } from '@/components/Logo'
-import { FormPasswordInput } from '@/components/FormPasswordInput'
+import { FormEmailInput } from '@/components/FormEmailInput'
 
 export const Route = createFileRoute('/(auth)/signin/')({
   component: SignInForm,
@@ -36,6 +37,7 @@ function SignInForm() {
   })
   const router = useRouter()
   const { signInWithCredentials } = useSignIn()
+	const { sendPasswordResetEmail } = useSendPasswordResetEmail()
   async function onSubmit(values: z.infer<typeof zSignInTrpcInput>) {
     try {
       await signInWithCredentials.mutateAsync({
@@ -64,33 +66,8 @@ function SignInForm() {
           <div className={'text-center font-bold text-lg'}>
             <h1>Sign in for Acme Inc.</h1>
           </div>
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input placeholder="hello@example.com" {...field} type="email" required />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          {/* <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input placeholder="Password" {...field} type="password" required />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          /> */}
-					<FormPasswordInput form={form} label="" name="password" placeholder='Enter password'/>
+					<FormEmailInput form={form} label="Email" name="email" placeholder='hello@example.com' />
+					<FormPasswordInput form={form} label="Password" name="password" placeholder='Enter password'/>
           <FormField
             control={form.control}
             name="rememberMe"
@@ -107,6 +84,7 @@ function SignInForm() {
             {form.formState.isSubmitting && <LoaderCircle className="animate-spin" />}
             {form.formState.isSubmitting ? 'Sign in...' : 'Sign in'}
           </Button>
+					<p className="underline cursor-pointer" onClick={()=>{sendPasswordResetEmail(values.email)}}>Forget password?</p>
         </form>
       </Form>
     </div>

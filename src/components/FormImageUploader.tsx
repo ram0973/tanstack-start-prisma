@@ -52,11 +52,11 @@ export const FormImageUploader = <T extends Record<string, unknown>>({
       try {
         reader.onload = () => setPreview(reader.result);
         reader.readAsDataURL(acceptedFiles[0]);
-        form.setValue("image", acceptedFiles[0]);
-        form.clearErrors("image");
+        form.setValue(name, acceptedFiles[0]);
+        form.clearErrors(name);
       } catch (_error) {
         setPreview(null);
-        form.resetField("image");
+        form.resetField(name);
       }
     },
     [form],
